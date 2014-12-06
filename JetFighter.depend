@@ -700,3 +700,59 @@
 	<math.h>
 	"Game.h"
 
+1417053822 source:c:\gitprojects\jetfighter\jetfighter\src\game\animation.cpp
+	<math.h>
+	"Game.h"
+
+1417846202 c:\gitprojects\jetfighter\jetfighter\src\game\game.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	"Vector2D.h"
+
+1414040339 c:\gitprojects\jetfighter\jetfighter\src\game\vector2d.h
+	<iostream>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector2.hpp>
+
+1417756742 source:c:\gitprojects\jetfighter\jetfighter\src\game\enemy.cpp
+	<stdlib.h>
+	<math.h>
+	"Game.h"
+
+1417692905 source:c:\gitprojects\jetfighter\jetfighter\src\game\game.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<time.h>
+	"Game.h"
+
+1417597569 source:c:\gitprojects\jetfighter\jetfighter\src\game\particle.cpp
+	<math.h>
+	"Game.h"
+
+1417756073 source:c:\gitprojects\jetfighter\jetfighter\src\game\player.cpp
+	<stdio.h>
+	<math.h>
+	"Game.h"
+
+1417756952 source:c:\gitprojects\jetfighter\jetfighter\src\game\projectile.cpp
+	<math.h>
+	"Game.h"
+
+1417319537 source:c:\gitprojects\jetfighter\jetfighter\src\game\texture.cpp
+	<stdio.h>
+	<string.h>
+	"Game.h"
+
+1417425103 source:c:\gitprojects\jetfighter\jetfighter\src\game\utility.cpp
+	"Game.h"
+
+1405754295 source:c:\gitprojects\jetfighter\jetfighter\src\game\vector2d.cpp
+	<math.h>
+	"Vector2D.h"
+
+1417849130 source:c:\gitprojects\jetfighter\jetfighter\src\main.cpp
+	"Game/Game.h"
+

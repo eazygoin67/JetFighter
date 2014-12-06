@@ -46,18 +46,18 @@
 			<Add directory="C:/Our Stuff/Programming/SDL-Image/Image-2.0.0/lib" />
 			<Add directory="C:/Our Stuff/Programming/SDL-TTF/lib" />
 		</Linker>
-		<Unit filename="Main.cpp" />
-		<Unit filename="src/Animation.cpp" />
-		<Unit filename="src/Enemy.cpp" />
-		<Unit filename="src/Game.cpp" />
-		<Unit filename="src/Game.h" />
-		<Unit filename="src/Particle.cpp" />
-		<Unit filename="src/Player.cpp" />
-		<Unit filename="src/Projectile.cpp" />
-		<Unit filename="src/Texture.cpp" />
-		<Unit filename="src/Utility.cpp" />
-		<Unit filename="src/Vector2D.cpp" />
-		<Unit filename="src/Vector2D.h" />
+		<Unit filename="src/Game/Animation.cpp" />
+		<Unit filename="src/Game/Enemy.cpp" />
+		<Unit filename="src/Game/Game.cpp" />
+		<Unit filename="src/Game/Game.h" />
+		<Unit filename="src/Game/Particle.cpp" />
+		<Unit filename="src/Game/Player.cpp" />
+		<Unit filename="src/Game/Projectile.cpp" />
+		<Unit filename="src/Game/Texture.cpp" />
+		<Unit filename="src/Game/Utility.cpp" />
+		<Unit filename="src/Game/Vector2D.cpp" />
+		<Unit filename="src/Game/Vector2D.h" />
+		<Unit filename="src/Main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
