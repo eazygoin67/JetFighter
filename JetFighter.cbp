@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="JetFighter" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/JetFighter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/JetFighter" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static-libgcc" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="C:/Our Stuff/Programming/SDL2.0.3/include/SDL2" />
+			<Add directory="C:/Our Stuff/Programming/SDL-Image/Image-2.0.0/include/SDL2" />
+			<Add directory="C:/Our Stuff/Programming/SDL-TTF/include/SDL2" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmingw32" />
+			<Add option="-lSDL2main" />
+			<Add option="-lSDL2" />
+			<Add option="-lSDL2_image" />
+			<Add option="-lSDL2_ttf" />
+			<Add directory="C:/Our Stuff/Programming/SDL2.0.3/lib" />
+			<Add directory="C:/Our Stuff/Programming/SDL-Image/Image-2.0.0/lib" />
+			<Add directory="C:/Our Stuff/Programming/SDL-TTF/lib" />
+		</Linker>
+		<Unit filename="Main.cpp" />
+		<Unit filename="src/Animation.cpp" />
+		<Unit filename="src/Enemy.cpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Game.h" />
+		<Unit filename="src/Particle.cpp" />
+		<Unit filename="src/Player.cpp" />
+		<Unit filename="src/Projectile.cpp" />
+		<Unit filename="src/Texture.cpp" />
+		<Unit filename="src/Utility.cpp" />
+		<Unit filename="src/Vector2D.cpp" />
+		<Unit filename="src/Vector2D.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
