@@ -60,16 +60,13 @@ bool 			GameInit( Game* game )
 		return false;
 	}
 
-	// Initialise Gamepad
-	///TODO: Initialise Gamepad Support
-
 	// Set Running State to True, so we can enter the main loop
 	game->running = true;
 
 	// Create the SDL window
 	///TODO: Error Check when creating SDL Screen and Renderer Objects
 	game->window = SDL_CreateWindow( "JET Fighter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0 );
-	game->render = SDL_CreateRenderer( game->window, -1, SDL_RENDERER_ACCELERATED );
+	game->render = SDL_CreateRenderer( game->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
 	// Set Screen Color
 	game->screen_color.r = 0;
@@ -170,6 +167,13 @@ void 			GameReset( Game* game )
 	game->needs_reset 					= false;
 	game->next_reset					= 0;
 
+	// Set High Score
+	if (game->score > game->high_score)
+		game->high_score = game->score;
+
+	// Reset Score
+	game->score 						= 0;
+
 	// Reset Player to Default State
     game->player.pos 					= Vector2D( SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.5 );
     game->player.vel.zero();
@@ -189,6 +193,8 @@ void 			GameReset( Game* game )
 		game->particles[i].alive = false;
 
 	// Reset all Projectiles
+	game->proj_enemy_count = 0;
+	game->proj_friendly_count = 0;
 	for( Uint16 i = 0;
 		 i < (POOLSIZE_ENEMY_PROJ > POOLSIZE_FRIENDLY_PROJ ? POOLSIZE_ENEMY_PROJ : POOLSIZE_FRIENDLY_PROJ);
 		 i++ )
@@ -239,9 +245,6 @@ void 			GameStartPlay( Game* game )
 
 void 			GameQuit( Game* game )
 {
-	// Close Gamepad
-	///TODO: Close Gamepad if it is open
-
 	// Unload SDL and Extensions
 	TTF_Quit();
 	IMG_Quit();
@@ -445,7 +448,7 @@ void 			GameSpawnRandomEnemy( Game* game )
 		return;
 
 	// Choose Random Type
-	EnemyType type = ENEMY_SIMPLE; //= (EnemyType)rand()%enemy_type_count;
+	EnemyType type = (EnemyType)(rand()%enemy_type_count);
 
 	// Spawn Random Enemy
     EnemySetup( &(game->enemies[game->enemy_count]), type );

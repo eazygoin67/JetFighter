@@ -69,15 +69,18 @@ void			PlayerUpdate( Player* player, Uint32 dt )
 	// Slow Velocity
 	player->vel *= player->move_fric;
 
+	// Cache Game for Simplicity
+	Game* game = player->runner;
+
 	// Check for Movement Input
 	Vector2D input;
-		if ( player->runner->key_up )
+		if ( game->key_up )
 			input.y -= player->move_speed;
-		if ( player->runner->key_down )
+		if ( game->key_down )
 			input.y += player->move_speed;
-		if ( player->runner->key_left )
+		if ( game->key_left )
 			input.x -= player->move_speed;
-		if ( player->runner->key_right )
+		if ( game->key_right )
 			input.x += player->move_speed;
 	input.truncate(player->move_speed);
 
@@ -105,7 +108,7 @@ void			PlayerUpdate( Player* player, Uint32 dt )
 	player->collision.y = (int)player->pos.y-16 + player->col_offset.y;
 
 	// Check for Shooting
-	if (player->runner->key_shoot)
+	if (game->key_shoot)
 	{
 		if ( player->next_shot < SDL_GetTicks() )
 		{
@@ -118,7 +121,7 @@ void			PlayerUpdate( Player* player, Uint32 dt )
 			pos.y -= 32;
 
 			// Spawn Projectile
-			Projectile* proj = GameSpawnProjectile( player->runner, true, pos, vel );
+			Projectile* proj = GameSpawnProjectile( game, true, pos, vel );
 
 			// Additional Properties
 			if (proj != nullptr)
@@ -130,16 +133,26 @@ void			PlayerUpdate( Player* player, Uint32 dt )
 		}
 	}
 
-	///TODO: Check for collisions with enemy projectiles
+	// Check Projectile Collisions
+	Projectile* proj;	for( Uint16 i = 0; i < game->proj_enemy_count; i++ )
+	{
+		proj = &(game->projectiles_enemy[i]);
+
+		if ( UtilityAabbCheck( &(player->collision), &(proj->collision) ) )
+		{
+			player->hp -= proj->damage;
+			proj->alive = false;
+		}
+	}
 
 	// Check for Death
 	if ( player->hp <= 0 )
 	{
 		player->alive = false;
-		GameSpawnParticle( player->runner, player->pos, PART_EXPLOSION_01 );
+		GameSpawnParticle( game, player->pos, PART_EXPLOSION_01 );
 
-		player->runner->needs_reset = true;
-		player->runner->next_reset = SDL_GetTicks() + 2000;
+		game->needs_reset = true;
+		game->next_reset = SDL_GetTicks() + 2000;
 	}
 
 }

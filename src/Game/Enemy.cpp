@@ -89,6 +89,43 @@ bool 			EnemySetup( Enemy* enemy, EnemyType type, bool spawn_random )
 		}
 		break;
 
+		/*** Straight Shoot enemy ***/
+		case (ENEMY_STRAIGHTSHOOT):
+		{
+			enemy->type 						= type;
+
+			enemy->pos.zero();
+			enemy->vel							= Vector2D( 0.0f, 1.0 + rand()%200 * 0.01 );
+
+			enemy->alive 						= true;
+			enemy->hp 							= 1;
+			enemy->hp_max						= 1;
+			enemy->score_value 					= 40;
+
+			enemy->collision.w 					= 24;
+			enemy->collision.h 					= 24;
+			enemy->col_offset.x 				= 4;
+			enemy->col_offset.y 				= 4;
+
+			enemy->ship_ani.image_count 		= 1;
+			enemy->ship_ani.image_speed 		= 0;
+			enemy->ship_ani.image_index 		= 0;
+			enemy->ship_ani.y_offset 			= 32*4;
+			enemy->ship_ani.rect.w 				= 32;
+			enemy->ship_ani.rect.h 				= 32;
+			enemy->ship_ani.loops 				= false;
+
+			enemy->data.straight_data.cooldown	= SDL_GetTicks() + 500;
+
+			enemy->update						= EnemyUpdateStraightShoot;
+
+			if ( spawn_random )
+				enemy->pos = Vector2D( 64+rand()%SCREEN_WIDTH-64, -64 );
+
+			return true;
+		}
+		break;
+
 		/*** Fail Case ***/
 		default:
 			return false;
@@ -202,6 +239,40 @@ bool			EnemyUpdateSimple( Enemy* enemy, Uint32 dt )
 	{
 		GameSpawnParticle( game, enemy->pos, PART_EXPLOSION_01 );
 		enemy->alive = false;
+		game->score += enemy->score_value;
+	}
+
+	return enemy->alive;
+}
+
+bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt )
+{
+	// Copy Update Simple Movement
+	EnemyUpdateSimple(enemy, dt);
+
+	// Check for Shootinig
+	if (SDL_GetTicks() > enemy->data.straight_data.cooldown)
+	{
+		// Set Cooldown
+		enemy->data.straight_data.cooldown = SDL_GetTicks() + 500;
+
+		// Get Position and Velocity of Projectile
+		Vector2D pos = enemy->pos;
+		Vector2D vel( 0, 15 );
+		pos.y += 32;
+
+		// Spawn Projectile
+		Projectile* proj = GameSpawnProjectile( enemy->runner, false, pos, vel );
+
+		// Additional Properties
+		if (proj != nullptr)
+		{
+			proj->ani.image_count = 2;
+			proj->ani.image_speed = 0;
+			proj->ani.image_index = 1;
+			proj->ani.y_offset = 32*7;
+			proj->damage = 5;
+		}
 	}
 
 	return enemy->alive;

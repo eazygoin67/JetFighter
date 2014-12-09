@@ -50,6 +50,7 @@ struct Particle;
 enum EnemyType : Uint16
 {
 	ENEMY_SIMPLE = 0,
+	ENEMY_STRAIGHTSHOOT,
 	// Add more as needed
 
 	enemy_type_count
@@ -130,6 +131,13 @@ struct Player
 
 /*** Enemy ***/
 
+union EnemyData
+{
+	struct {
+		Uint32 	cooldown;
+	} straight_data;
+};
+
 struct Enemy
 {
 	Game* 					runner = nullptr;
@@ -148,6 +156,8 @@ struct Enemy
 
 	Animation				ship_ani;
 	AssetTexture*			sprite_texture;
+
+	EnemyData				data;
 
 	bool					(*update)(Enemy*, Uint32);
 };
@@ -306,6 +316,7 @@ void 			EnemyRender( Enemy* enemy );
 
 // Update Functions of Several Different Enemy Types
 bool 			EnemyUpdateSimple( Enemy* enemy, Uint32 dt );
+bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt );
 
 /*** Particle Functions ***/
 

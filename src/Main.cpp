@@ -1,9 +1,9 @@
 #include "Game/Game.h"
 
-///TODO: Check Collision Positions
-///TODO: Add Score System
-///TODO: Add New Enemies (1 or 2)
-///TODD: Player Bullet Collisions
+
+///TODO: Draw Score to Screen
+///TODO: Add One More New Enemy
+///TODO: Bullet Hit Particle
 ///NOTE: Change Poolsizes to accommodate more things at once
 
 int main( int argc, char** argv )

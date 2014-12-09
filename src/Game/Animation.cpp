@@ -25,12 +25,8 @@
 
 inline float sign( float value )
 {
-	if (value == 0)
-		return 0;
-
-	return ( value > 0 ? 1 : -1 );
+	return ( (0.0f < value) - (value < 0.0f) );
 }
-
 
 /*
 	Animation Update
