@@ -413,26 +413,6 @@ void 			GameBackgroundRender( Game* game )
 }
 
 /*
-	Game Input Joystick
-
-	Purpose: Called when handling input to update
-			the state of the gamepad axis(s).
-
-	Parameters: Game - a pointer to the Game object
-					running the game.
-				E - A pointer to the event from the
-					event loop polled when chacking
-					input
-
-	Return:	Nil
-*/
-
-void 			GameInputJoystickAxis( Game* game )
-{
-	///TODO: Implement Gamepad Events
-}
-
-/*
 	Game Input
 
 	Purpose: Called each gameloop while we have not
@@ -808,9 +788,7 @@ void 			GameInput( Game* game )
 	}
 
 	game->key_states = SDL_GetKeyboardState(0);
-	GameInputJoystickAxis( game );
 
-	///TODO: Possibly change so escape just resets the game
 	// Check for Escape Key Quit
 	if (game->key_states[SDL_SCANCODE_ESCAPE] > 0)
 		game->running = false;

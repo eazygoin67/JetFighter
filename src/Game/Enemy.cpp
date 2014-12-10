@@ -7,6 +7,7 @@
 /*************************************/
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 #include "Game.h"
@@ -126,8 +127,46 @@ bool 			EnemySetup( Enemy* enemy, EnemyType type, bool spawn_random )
 		}
 		break;
 
+		/*** Straight Shoot enemy ***/
+		case (ENEMY_STRAFESHOOT):
+		{
+			enemy->type 						= type;
+
+			enemy->pos.zero();
+			enemy->vel							= Vector2D( 3.0 + rand()%200 * 0.01, 0.0f );
+
+			enemy->alive 						= true;
+			enemy->hp 							= 1;
+			enemy->hp_max						= 1;
+			enemy->score_value 					= 60;
+
+			enemy->collision.w 					= 24;
+			enemy->collision.h 					= 24;
+			enemy->col_offset.x 				= 4;
+			enemy->col_offset.y 				= 4;
+
+			enemy->ship_ani.image_count 		= 1;
+			enemy->ship_ani.image_speed 		= 0;
+			enemy->ship_ani.image_index 		= 0;
+			enemy->ship_ani.y_offset 			= 32*5;
+			enemy->ship_ani.rect.w 				= 32;
+			enemy->ship_ani.rect.h 				= 32;
+			enemy->ship_ani.loops 				= false;
+
+			enemy->data.straight_data.cooldown	= SDL_GetTicks() + 500;
+
+			enemy->update						= EnemyUpdateStrafeShoot;
+
+			if ( spawn_random )
+				enemy->pos = Vector2D( -64, 64 + (rand()%(SCREEN_HEIGHT/2)) );
+
+			return true;
+		}
+		break;
+
 		/*** Fail Case ***/
 		default:
+			printf( "Error: Tried to create unknown enemy type!\n" );
 			return false;
 		break;
 	}
@@ -270,6 +309,99 @@ bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt )
 	{
 		// Set Cooldown
 		enemy->data.straight_data.cooldown = SDL_GetTicks() + 500;
+
+		// Get Position and Velocity of Projectile
+		Vector2D pos = enemy->pos;
+		Vector2D vel( 0, 15 );
+		pos.y += 32;
+
+		// Spawn Projectile
+		Projectile* proj = GameSpawnProjectile( enemy->runner, false, pos, vel );
+
+		// Additional Properties
+		if (proj != nullptr)
+		{
+			proj->ani.image_count = 2;
+			proj->ani.image_speed = 0;
+			proj->ani.image_index = 1;
+			proj->ani.y_offset = 32*7;
+			proj->damage = 5;
+		}
+	}
+
+	return enemy->alive;
+}
+
+/*
+	Enemy Update Strafe Shoot
+
+	Purpose: <Enemy Update Function>
+			 This Enemy will appear at the side of screen,
+			 strafing left to right, while shooting downward
+
+	Parameters: Enemy - a pointer to the enemy to
+					Affect.
+
+	Return:	True if the enemy ends the update still alive
+			Otherwise false
+*/
+
+bool			EnemyUpdateStrafeShoot( Enemy* enemy, Uint32 dt )
+{
+	// Move Positions
+	enemy->pos += enemy->vel;
+
+	// Update Collision Box
+	enemy->collision.x = (int)enemy->pos.x-16 + enemy->col_offset.x;
+	enemy->collision.y = (int)enemy->pos.y-16 + enemy->col_offset.y;
+
+	// Check for reverse direction
+	if ( enemy->pos.x < 0 && enemy->vel.x < 0 )
+		enemy->vel.x *= -1;
+	else
+	if ( enemy->pos.x > SCREEN_WIDTH && enemy->vel.x > 0 )
+		enemy->vel.x *= -1;
+
+	// Cache Game Pointer for Ease
+	Game* game = enemy->runner;
+
+	// Check Player Collision
+	Player* player = &(game->player);
+	if (player->alive)
+	{
+		if (UtilityAabbCheck( &(enemy->collision), &(player->collision) ))
+		{
+			player->hp -= 25;
+			enemy->alive = false;
+			GameSpawnParticle( game, enemy->pos, PART_EXPLOSION_01 );
+		}
+	}
+
+	// Check Projectile Collisions
+	Projectile* proj;	for( Uint16 i = 0; i < game->proj_friendly_count; i++ )
+	{
+		proj = &(game->projectiles_friendly[i]);
+
+		if ( UtilityAabbCheck( &(enemy->collision), &(proj->collision) ) )
+		{
+			enemy->hp -= proj->damage;
+			proj->alive = false;
+		}
+	}
+
+	// Check for no more health
+	if (enemy->hp <= 0)
+	{
+		GameSpawnParticle( game, enemy->pos, PART_EXPLOSION_01 );
+		enemy->alive = false;
+		GameScoreAdd( game, enemy->score_value );
+	}
+
+	// Check for Shootinig
+	if (SDL_GetTicks() > enemy->data.straight_data.cooldown)
+	{
+		// Set Cooldown
+		enemy->data.straight_data.cooldown = SDL_GetTicks() + 600;
 
 		// Get Position and Velocity of Projectile
 		Vector2D pos = enemy->pos;

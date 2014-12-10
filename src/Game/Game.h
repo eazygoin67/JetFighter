@@ -24,7 +24,7 @@
 #define POOLSIZE_ENEMY 20
 #define POOLSIZE_PARTICLE 20
 #define POOLSIZE_FRIENDLY_PROJ 10
-#define POOLSIZE_ENEMY_PROJ 30
+#define POOLSIZE_ENEMY_PROJ 40
 
 #define ENEMY_SPAWN_CHANCE 60
 
@@ -51,6 +51,7 @@ enum EnemyType : Uint16
 {
 	ENEMY_SIMPLE = 0,
 	ENEMY_STRAIGHTSHOOT,
+	ENEMY_STRAFESHOOT,
 	// Add more as needed
 
 	enemy_type_count
@@ -286,8 +287,6 @@ AssetTexture*	GameFindTexture( Game* game, const char* name );
 void 			GameBackgroundUpdate( Game* game, Uint32 dt );
 void 			GameBackgroundRender( Game* game );
 
-void 			GameInputJoystickAxis( Game* game );
-
 void 			GameSpawnRandomEnemy( Game* game );
 void 			GameKillEnemy( Game* game, Enemy* enemy );
 
@@ -325,6 +324,7 @@ void 			EnemyRender( Enemy* enemy );
 // Update Functions of Several Different Enemy Types
 bool 			EnemyUpdateSimple( Enemy* enemy, Uint32 dt );
 bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt );
+bool 			EnemyUpdateStrafeShoot( Enemy* enemy, Uint32 dt );
 
 /*** Particle Functions ***/
 

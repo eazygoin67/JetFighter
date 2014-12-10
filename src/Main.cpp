@@ -1,7 +1,6 @@
 #include "Game/Game.h"
 
 ///TODO: Add One More New Enemy
-///NOTE: Change Poolsizes to accommodate more things at once
 
 int main( int argc, char** argv )
 {
