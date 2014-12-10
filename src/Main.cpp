@@ -1,6 +1,5 @@
 #include "Game/Game.h"
 
-
 ///TODO: Draw Score to Screen
 ///TODO: Add One More New Enemy
 ///TODO: Bullet Hit Particle

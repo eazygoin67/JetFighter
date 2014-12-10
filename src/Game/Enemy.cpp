@@ -245,6 +245,22 @@ bool			EnemyUpdateSimple( Enemy* enemy, Uint32 dt )
 	return enemy->alive;
 }
 
+/*
+	Enemy Update Straight Shoot
+
+	Purpose: <Enemy Update Function>
+			 This Simple enemy will fly in a straight
+			 vertical pattern, until it goes out of
+			 screen, shooting a projectile.
+
+	Parameters: Enemy - a pointer to the enemy to
+					Affect.
+
+	Return:	True if the enemy ends the update still alive
+			Otherwise false
+*/
+
+
 bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt )
 {
 	// Copy Update Simple Movement
