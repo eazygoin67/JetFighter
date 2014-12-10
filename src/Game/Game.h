@@ -233,8 +233,12 @@ struct Game
 	Uint16					background_y = 0;
 	Uint16 					background_yspeed = 4;
 
-	Uint32					score = 0;
-	Uint32					high_score = 0;
+	Uint32					score = 0xFFFFFFFF;
+	Uint32					high_score = 0xFFFFFFFF;
+	char					score_text[8] = "0";
+	char					highscore_text[8] = "0";
+	AssetTexture			score_text_font;
+	AssetTexture			highscore_text_font;
 
 	bool					key_up = false;
 	bool					key_down = false;
@@ -292,6 +296,10 @@ void 			GameKillParticle( Game* game, Particle* part );
 
 Projectile*		GameSpawnProjectile( Game* game, bool friendly, const Vector2D& pos, const Vector2D& vel );
 void 			GameKillProjectile( Game* game, Projectile* proj );
+
+void 			GameScoreSet( Game* game, Uint32 value );
+void 			GameScoreAdd( Game* game, Uint32 value );
+void 			GameHighScoreSet( Game* game, Uint32 value );
 
 void 			GameRenderHud( Game* game );
 

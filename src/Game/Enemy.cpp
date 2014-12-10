@@ -239,7 +239,7 @@ bool			EnemyUpdateSimple( Enemy* enemy, Uint32 dt )
 	{
 		GameSpawnParticle( game, enemy->pos, PART_EXPLOSION_01 );
 		enemy->alive = false;
-		game->score += enemy->score_value;
+		GameScoreAdd( game, enemy->score_value );
 	}
 
 	return enemy->alive;
@@ -259,7 +259,6 @@ bool			EnemyUpdateSimple( Enemy* enemy, Uint32 dt )
 	Return:	True if the enemy ends the update still alive
 			Otherwise false
 */
-
 
 bool			EnemyUpdateStraightShoot( Enemy* enemy, Uint32 dt )
 {

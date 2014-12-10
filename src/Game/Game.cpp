@@ -103,6 +103,10 @@ void 			GameSetup( Game* game )
 	if ( game->background_texture == nullptr )
 		printf( "Error: Background Texture was not correctly Assigned\n" );
 
+	// Set Score and Text Textures
+	GameScoreSet( game, 0 );
+	GameHighScoreSet( game, 0 );
+
 	// Set Up Player Object
 	game->player.runner = game;
 	PlayerSetup( &(game->player) );
@@ -169,10 +173,10 @@ void 			GameReset( Game* game )
 
 	// Set High Score
 	if (game->score > game->high_score)
-		game->high_score = game->score;
+		GameHighScoreSet( game, game->score );
 
 	// Reset Score
-	game->score 						= 0;
+	GameScoreSet( game, 0 );
 
 	// Reset Player to Default State
     game->player.pos 					= Vector2D( SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.5 );
@@ -276,6 +280,12 @@ bool 			GameLoadAssets( Game* game )
 	SDL_Color text_color = {255,255,255,255};
 	if (!TextureLoadFromText( &(game->game_start_text), game->render,
 							  "Press Enter to Start", game->game_font, text_color ))
+		return false;
+
+	// Load Score Text Textures
+	if ( !TextureInit( &(game->score_text_font), "Score Text" ) )
+		return false;
+	if ( !TextureInit( &(game->highscore_text_font), "H-Score Text" ) )
 		return false;
 
 	// Primary Texture
@@ -601,6 +611,88 @@ void 			GameKillProjectile( Game* game, Projectile* proj )
 }
 
 /*
+	Game Score Set
+
+	Purpose: Sets the value of the current score, and
+			refreshes the text texture drawing the score.
+
+	Parameters: Game - a pointer to the Game object
+					running the game.
+				Value - The Value of the New Score
+
+	Return:	Nil
+*/
+
+void 			GameScoreSet( Game* game, Uint32 value )
+{
+	if (game->score == value)
+		return;
+
+	game->score = value;
+
+	// Convert Score to String
+	sprintf( game->score_text, "%d", game->score );
+
+	// Refresh Score Text Texture
+	SDL_Color text_color = {255,255,255,255};
+	TextureLoadFromText( &(game->score_text_font), game->render,
+						 game->score_text, game->game_font, text_color );
+}
+
+/*
+	Game Score Add
+
+	Purpose: Adds the value to the current score, and
+			refreshes the text texture drawing the score.
+
+	Parameters: Game - a pointer to the Game object
+					running the game.
+				Value - The Value of the New Score
+
+	Return:	Nil
+*/
+
+void 			GameScoreAdd( Game* game, Uint32 value )
+{
+	// Set Score
+	game->score += value;
+
+	// Convert Score to String
+	sprintf( game->score_text, "%d", game->score );
+
+	// Refresh Score Text Texture
+	SDL_Color text_color = {255,255,255,255};
+	TextureLoadFromText( &(game->score_text_font), game->render,
+						 game->score_text, game->game_font, text_color );
+}
+
+/*
+	Game High Score Set
+
+	Purpose: Sets the value of the high score, and
+			refreshes the text texture drawing the score.
+
+	Parameters: Game - a pointer to the Game object
+					running the game.
+				Value - The Value of the New Score
+
+	Return:	Nil
+*/
+
+void 			GameHighScoreSet( Game* game, Uint32 value )
+{
+	game->high_score = value;
+
+	// Convert Score to String
+	sprintf( game->highscore_text, "%d", game->high_score );
+
+	// Refresh Score Text Texture
+	SDL_Color text_color = {255,255,255,255};
+	TextureLoadFromText( &(game->highscore_text_font), game->render,
+						 game->highscore_text, game->game_font, text_color );
+}
+
+/*
 	Game Render Hud
 
 	Purpose: Draws the heads-up display elements of
@@ -626,6 +718,10 @@ void 			GameRenderHud( Game* game )
 			SDL_SetRenderDrawColor( game->render, 0xFF, 0x00, 0x00, 0xFF );
 			SDL_RenderFillRect( game->render, &bar );
 		}
+
+		// Render Current Score
+		TextureRender( &(game->score_text_font), game->render,
+						32, SCREEN_HEIGHT-64 );
 	}
 	else
 	// HUD While Waiting
@@ -634,6 +730,10 @@ void 			GameRenderHud( Game* game )
 		TextureRender( &(game->game_start_text), game->render,
 						   SCREEN_WIDTH/2-game->game_start_text.width/2,
 						   SCREEN_HEIGHT/2+64 );
+
+		// Render High Score
+		TextureRender( &(game->highscore_text_font), game->render,
+						32, SCREEN_HEIGHT-64 );
 	}
 }
 
