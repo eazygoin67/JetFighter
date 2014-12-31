@@ -42,7 +42,7 @@ public:
 	float 					length() const;
 	void 					normalise();
 	void 					truncate( float max_value );
-	float 					dot(const Vector2D& v2 ) const;
+	float 					dot( const Vector2D& v2 ) const;
 
 	static Vector2D 		lerp( const Vector2D& start, const Vector2D& end, const float& percent );
 	static Vector2D			nlerp( const Vector2D& start, const Vector2D& end, const float& percent );
@@ -90,11 +90,11 @@ public:
 		return is;
 	}
 	#endif // VECTOR_2D_STREAM_OPERATORS
-	
+
 	//**********************//
 	// SFML Vector Cast		//
 	//**********************//
-	
+
 	#if defined(SFML_VECTOR)
 	operator sf::Vector2f() { return sf::Vector2f( x, y ); }
 	#elif defined(SFML_STATIC)

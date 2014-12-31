@@ -1,7 +1,5 @@
 #include "Game/Game.h"
 
-///TODO: Add One More New Enemy
-
 int main( int argc, char** argv )
 {
 	// Create Game
@@ -28,7 +26,7 @@ int main( int argc, char** argv )
 	// Unload Game Assets
 	GameFreeAssets(&game);
 
-    // Unload Game Data when Exitting
+    // Unload Game Data when Exiting
     GameQuit(&game);
 
     // Return Success

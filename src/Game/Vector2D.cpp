@@ -156,9 +156,7 @@ Vector2D& Vector2D::operator/=(const Vector2D &v2)
 {
 	if (x == 0 || y == 0 || v2.x == 0 || v2.y == 0)
 	{
-		x = 0;
-		y = 0;
-		return *this;
+		return this->zero();
 	}
 
 	x /= v2.x;
